@@ -99,6 +99,18 @@ function! g:DebugstringPrefixStr()
   return l:debug_str
 endfunc
 
+function! g:DebugstringPrefixStack()
+  let l:debug_str = '[' . fnamemodify(bufname('%'), ':t') . ':'
+  if getline('.') =~# '^$' " Empty line
+      let l:debug_str .= line('.')
+  else
+      let l:debug_str .= string(str2nr(line('.')) + 1)
+  endif
+  let l:debug_str .= '] ==> '
+
+  return l:debug_str
+endfunc
+
 " Supplementary functions {{{
 ""
 " Reset the debugging counter.
@@ -122,21 +134,21 @@ function! s:incrDebugCounter()
     let g:debugStringCounter += g:debugStringCounterStep
 endfunc
 
-if !hasmapto('<Plug>DumpDebugStringVar')
-    ""@setting default_dump_debug_map
-    "
-    nmap <unique> <Leader>ds  <Plug>DumpDebugStringVar
-endif
-if !hasmapto('<Plug>DumpDebugStringExpr')
-    ""@setting default_dump_debug_map
-    "
-    nmap <unique> <Leader>dS  <Plug>DumpDebugStringExpr
-endif
-if !hasmapto('<Plug>DumpDebugStringCexpr')
-    ""@setting default_dump_debug_map
-    "
-    nmap <unique> <Leader>DS  <Plug>DumpDebugStringCexpr
-endif
+"if !hasmapto('<Plug>DumpDebugStringVar')
+"    ""@setting default_dump_debug_map
+"    "
+"    nmap <unique> <Leader>ds  <Plug>DumpDebugStringVar
+"endif
+"if !hasmapto('<Plug>DumpDebugStringExpr')
+"    ""@setting default_dump_debug_map
+"    "
+"    nmap <unique> <Leader>dS  <Plug>DumpDebugStringExpr
+"endif
+"if !hasmapto('<Plug>DumpDebugStringCexpr')
+"    ""@setting default_dump_debug_map
+"    "
+"    nmap <unique> <Leader>DS  <Plug>DumpDebugStringCexpr
+"endif
 
 ""
 " Wrapper around the low-level debug* methods.
